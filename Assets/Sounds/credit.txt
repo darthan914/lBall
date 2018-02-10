@@ -1,0 +1,15 @@
+Sound Effect Need
+
+Select Menu
+Hit Wall
+Hit Box
+Pop Ball
+Break Box
+Hit Sand
+Turning
+Teleport
+Flip
+On Off Wall/Object
+Complete
+Failure
+Go

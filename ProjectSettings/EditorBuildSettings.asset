@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 6abd1e297cd26f049ac80b83839f7f13
+  - enabled: 1
+    path: Assets/Scenes/Select Level Pack.unity
+    guid: 94ce4594f48e7f74987a59fe013660b4
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter.unity
+    guid: 0749e1a693206b7488db61ca85ab678c
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00001.unity
+    guid: 088ae240b3fe9b845a5bb4d95c8ddec7
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00002.unity
+    guid: c10e8248ca1274f43bd043826cc48982
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00003.unity
+    guid: d679042043ea8d54cab9786e73f31b8e
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00004.unity
+    guid: 96ddc0120415a81468dc2b0a172ef1f2
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00005.unity
+    guid: 5569cd3f596a19045b9add6d446fa506
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00006.unity
+    guid: 3618e4274806dd243befe691e115a6ac
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00007.unity
+    guid: 521ddd1bff2783d4190f78d6662b5509
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00008.unity
+    guid: 3a7b05cb6e41d0f49b3d0bfa32ee3871
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00009.unity
+    guid: 200c1947f128e4c48ad653f7cd4271d4
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00010.unity
+    guid: f40e2770374659a44a85879bd17911d2
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00011.unity
+    guid: f29556be90557cf48a2fa20282788e0e
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00012.unity
+    guid: 347e95aec201f48448dae83dbb911373
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00013.unity
+    guid: ea5ae47fd6e175c4393ba0ff8cee4c09
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00014.unity
+    guid: 6e48f4c6ce603a749b3eb541578047e1
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00015.unity
+    guid: b771810a523ae2a4b8b87be5a6eedaf7
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00016.unity
+    guid: 612f195ad41349e4791766fbde01c493
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00017.unity
+    guid: 27a7b66d73965dd479b98f77e286d2de
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00018.unity
+    guid: 907871d9b19ea2c49b6ac61d1237afd7
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00019.unity
+    guid: ec98684fdcea2344991aeb0b20c7b4cc
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00020.unity
+    guid: dec6b62a79b833b4b8485a2f3e8f766c
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00021.unity
+    guid: ab0bf77de7c757e40acd74a06d25e952
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00022.unity
+    guid: 722e91a3409b22d43aeaa635d151e3f3
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00023.unity
+    guid: fed708c5684dfb84ea2ef40d82500eb9
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00024.unity
+    guid: a0ee60f412fcd4342b23191a314b0d11
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00025.unity
+    guid: d467f3018166fd242943b140dffb0bb7
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00026.unity
+    guid: 1aeb804f141f68f4da07003082450bb7
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00027.unity
+    guid: 71709f3fccade4c428442f18c02ba482
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00028.unity
+    guid: 6eaf7a22b5bdb054b809c153136ddd51
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00029.unity
+    guid: ad2b5da5d2fea3e45bdf2e497746d5d1
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Starter/00030.unity
+    guid: ca67be1d6b009794f81ab12626a77a7b
