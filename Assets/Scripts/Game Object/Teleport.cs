@@ -4,85 +4,74 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour {
 
-	private GameObject currentObject;
-	private Movement movement;
+    public AudioClip soundEffect;
+    private AudioSource source;
 
-	private GameObject teleportLocation;
+    private GameObject currentObject;
+	private Movement movement;
 
 	private GameObject main;
 	private MainController mc;
+	
+    public GameObject teleportLocation;
+    public bool exitOnly;
 
-	public bool exitOnly;
-	public bool stayed;
+    public bool stayed;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
 		main = GameObject.FindWithTag ("MainCamera");
 		mc = main.GetComponent<MainController> ();
 
-		GameObject[] teleports = GameObject.FindGameObjectsWithTag("Teleport");
-		GameObject[] exits = GameObject.FindGameObjectsWithTag("Exit");
-
-        if(exits.Length == 1)
-        {
-            foreach (GameObject exit in exits)
-            {
-                if (exit.gameObject.GetInstanceID() != gameObject.GetInstanceID())
-                {
-                    teleportLocation = exit.gameObject;
-                }
-            }
-        } else if (teleports.Length == 2) {
-			foreach (GameObject teleport in teleports)
-			{
-				if (teleport.gameObject.GetInstanceID () != gameObject.GetInstanceID ()) {
-					teleportLocation = teleport.gameObject;
-				}
-			}
-		}
-	}
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
-	void Update () {
-		if (mc.allowMove && movement != null) {
+	void FixedUpdate () {
+		if (mc.allowMove && movement) {
 			ClearObject ();
 			stayed = false;
-            if (!exitOnly)
-            {
-                teleportLocation.gameObject.GetComponent<Teleport>().stayed = false;
-            }
+            if (!exitOnly) teleportLocation.gameObject.GetComponent<Teleport>().stayed = false;
 		}
 
-		if (movement != null && !movement.warped && !stayed && !exitOnly) {
+		if (teleportLocation && movement && !movement.warped && !stayed && !exitOnly) {
 			if ((movement.lastMove == "Up" && currentObject.transform.position.y > transform.position.y) ||
 				(movement.lastMove == "Down" && currentObject.transform.position.y < transform.position.y) ||
 				(movement.lastMove == "Left" && currentObject.transform.position.x < transform.position.x) ||
 				(movement.lastMove == "Right" && currentObject.transform.position.x > transform.position.x))
 			{
-				currentObject.transform.position = teleportLocation.gameObject.transform.position;
+                source.PlayOneShot(soundEffect);
+                currentObject.transform.position = teleportLocation.gameObject.transform.position;
 				movement.warped = true;
-				movement = null;
-				currentObject = null;
-
+                ClearObject();
 			}
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.gameObject.GetComponent<Movement> () != null) {
+		if (other.gameObject.GetComponent<Movement> ()) {
 			currentObject = other.gameObject;
 			movement = currentObject.GetComponent<Movement> ();
 		}
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		if (other.gameObject.GetComponent<Movement> () != null && other.gameObject.GetComponent<Movement> ().lastMove == "None") {
+		if (other.gameObject.GetComponent<Movement> () && other.gameObject.GetComponent<Movement> ().lastMove == "None") {
 			stayed = true;
 			teleportLocation.gameObject.GetComponent<Teleport> ().stayed = true;
 		}
 	}
 
-	void ClearObject()
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.GetComponent<Movement>())
+        {
+            stayed = false;
+            teleportLocation.gameObject.GetComponent<Teleport>().stayed = false;
+        }
+    }
+
+    void ClearObject()
 	{
 		currentObject = null;
 		movement = null;

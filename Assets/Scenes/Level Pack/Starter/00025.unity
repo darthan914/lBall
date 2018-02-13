@@ -2562,14 +2562,6 @@ CompositeCollider2D:
         Y: -70000000
       - X: 43671876
         Y: -74062496
-    - - X: 6406250
-        Y: 5937500
-      - X: 3593750
-        Y: 5937500
-      - X: 3593750
-        Y: -16796876
-      - X: 6406250
-        Y: -16796876
     - - X: -13593750
         Y: 5937500
       - X: -36328124
@@ -2578,6 +2570,14 @@ CompositeCollider2D:
         Y: 3203125
       - X: -13593750
         Y: 3203125
+    - - X: 6406250
+        Y: 5937500
+      - X: 3593750
+        Y: 5937500
+      - X: 3593750
+        Y: -16796876
+      - X: 6406250
+        Y: -16796876
   m_CompositePaths:
     m_Paths:
     - - {x: 4.640625, y: -2}
@@ -2642,14 +2642,14 @@ CompositeCollider2D:
       - {x: 4.3593755, y: -7}
       - {x: 4.3671875, y: -7}
       - {x: 4.3671875, y: -7.4062495}
-    - - {x: 0.640625, y: 0.59375}
-      - {x: 0.359375, y: 0.59375}
-      - {x: 0.359375, y: -1.6796876}
-      - {x: 0.640625, y: -1.6796876}
     - - {x: -1.359375, y: 0.59375}
       - {x: -3.6328125, y: 0.59375}
       - {x: -3.6328125, y: 0.3203125}
       - {x: -1.359375, y: 0.3203125}
+    - - {x: 0.640625, y: 0.59375}
+      - {x: 0.359375, y: 0.59375}
+      - {x: 0.359375, y: -1.6796876}
+      - {x: 0.640625, y: -1.6796876}
   m_VertexDistance: 0.0005
 --- !u!50 &1774267651
 Rigidbody2D:
@@ -2816,6 +2816,36 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: obj
+      value: 
+      objectReference: {fileID: 1641397856}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 1810720112}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: blueObject
+      value: 
+      objectReference: {fileID: 1565101009}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: redObject
+      value: 
+      objectReference: {fileID: 1784925690}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: blueWall
+      value: 
+      objectReference: {fileID: 665793388}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: redWall
+      value: 
+      objectReference: {fileID: 762441497}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ac31aec18d1eee4a8e719d347b6a67f, type: 2}
   m_IsPrefabParent: 0

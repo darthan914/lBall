@@ -13,8 +13,12 @@ public class LoadLevel : MonoBehaviour {
     public Button button;
     private List<LevelPack> listLevelPack = new List<LevelPack>();
 
-	// Use this for initialization
-	void Start () {
+    public AudioClip select;
+    private AudioSource source;
+    private GameObject uiTranslation;
+
+    // Use this for initialization
+    void Awake () {
 
         for(int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
@@ -24,8 +28,6 @@ public class LoadLevel : MonoBehaviour {
             if (scenePath.Contains("Assets/Scenes/Level Pack/" + packName))
             {
                 string[] pathName = scenePath.Split('/');
-
-                Debug.Log(scenePath);
 
                 if(pathName.Length == 4)
                 {
@@ -88,21 +90,20 @@ public class LoadLevel : MonoBehaviour {
                 currentButton.GetComponentInChildren<Text>().text = listLevelPack[i].Name;
             }
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+        source = GetComponent<AudioSource>();
+
+        uiTranslation = GameObject.Find("UI Translation");
+    }
 
     public void LoadLevelByIndex(int index)
     {
-        SceneManager.LoadScene(index);
+        StartCoroutine(DelayedLoad(index));
     }
 
     public void LoadLevelByPath (string path)
     {
-        SceneManager.LoadScene(path);
+        StartCoroutine(DelayedLoad(path));
     }
 
     public void StoreLevel(LevelPack levelPack)
@@ -111,5 +112,32 @@ public class LoadLevel : MonoBehaviour {
         {
             listLevelPack.Add(levelPack);
         }
+    }
+
+    IEnumerator DelayedLoad(int scene)
+    {
+        //Play the clip once
+        source.PlayOneShot(select);
+
+
+        //Wait until clip finish playing
+        yield return new WaitForSeconds(select.length);
+
+        //Load scene here
+        SceneManager.LoadScene(scene);
+
+    }
+
+    IEnumerator DelayedLoad(string scene)
+    {
+        //Play the clip once
+        source.PlayOneShot(select);
+
+        //Wait until clip finish playing
+        yield return new WaitForSeconds(select.length);
+
+        //Load scene here
+        SceneManager.LoadScene(scene);
+
     }
 }

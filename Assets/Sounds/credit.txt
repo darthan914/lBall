@@ -1,15 +1,16 @@
 Sound Effect Need
 
-Select Menu
-Hit Wall
-Hit Box
-Pop Ball
-Break Box
-Hit Sand
-Turning
-Teleport
-Flip
-On Off Wall/Object
-Complete
-Failure
-Go
+menu-select : https://freesound.org/people/LittleRobotSoundFactory/sounds/270537/
+rolling : https://freesound.org/people/jalastram/sounds/318273/
+hit-wall : https://freesound.org/people/OwlStorm/sounds/404791/
+hit-box : https://freesound.org/people/LittleRobotSoundFactory/sounds/270326/
+pop-ball
+break-box : https://freesound.org/people/jalastram/sounds/318243/
+hit-sand
+turning : https://freesound.org/people/jalastram/sounds/318288/
+teleport
+fliping : https://freesound.org/people/jalastram/sounds/318287/
+on-off : https://freesound.org/people/jalastram/sounds/318353/
+complete
+failure
+go

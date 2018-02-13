@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class OneWay : MonoBehaviour {
 
-	public enum Direction {
+    public AudioClip soundEffect;
+    private AudioSource source;
+
+    public enum Direction {
 		Up, Down, Left, Right
 	}
 
 	private Direction direction;
 
-	void Start () {
+	void Awake () {
 		if (Mathf.RoundToInt (transform.eulerAngles.z) == 0) {
 			direction = Direction.Up;
 		} else if (Mathf.RoundToInt(transform.eulerAngles.z) == 90) {
@@ -20,7 +23,9 @@ public class OneWay : MonoBehaviour {
 		} else if (Mathf.RoundToInt(transform.eulerAngles.z) == 270) {
 			direction = Direction.Right;
 		}
-	}
+
+        source = GetComponent<AudioSource>();
+    }
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.GetComponent<Movement> () != null) {
@@ -28,7 +33,9 @@ public class OneWay : MonoBehaviour {
 				(direction == Direction.Down && other.gameObject.GetComponent<Movement> ().lastMove == "Up") ||
 				(direction == Direction.Left && other.gameObject.GetComponent<Movement> ().lastMove == "Right") ||
 				(direction == Direction.Right && other.gameObject.GetComponent<Movement> ().lastMove == "Left")) {
-				other.gameObject.GetComponent<Movement> ().oneWay = true;
+
+                source.PlayOneShot(soundEffect);
+                other.gameObject.GetComponent<Movement> ().oneWay = true;
 			}
 		}
 	}

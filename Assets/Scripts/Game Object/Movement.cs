@@ -7,26 +7,34 @@ public class Movement : MonoBehaviour {
 	public float speed = 10f;
 	public bool isMove = false;
 
-	public string lastMove = "None";
-	private float t = 0f;
+    public AudioClip rolling;
+    public AudioClip collideWall;
+    public AudioClip collideBall;
+    public AudioClip pop;
+
+    [HideInInspector] public string lastMove = "None";
+    [HideInInspector] public Vector3 centerPosition;
+    [HideInInspector] public bool oneWay;
+    [HideInInspector] public bool warped;
+
+    private float t;
 	private int count;
 
     private GameObject main;
     private MainController mc;
 
     private Rigidbody2D rb2d;
-	public Vector3 centerPosition;
-
-	private bool bySand;
-	public bool oneWay;
-	public bool warped;
+    private AudioSource source;
 
     private bool recorded;
     private Color currentColor;
 
+    private Vector2 touchOrigin = -Vector2.one;
 
-    void Start () {
+
+    void Awake () {
 		rb2d = GetComponent<Rigidbody2D> ();
+        source = GetComponent<AudioSource> ();
 
         main = GameObject.FindWithTag("MainCamera");
         mc = main.GetComponent<MainController>();
@@ -44,8 +52,10 @@ public class Movement : MonoBehaviour {
 			oneWay = false;
 		}
 
+
 		if (main.GetComponent<MainController>().allowMove) {
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+            if (Input.GetKeyDown (KeyCode.UpArrow)) {
 				Rolling("Up");
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 				Rolling("Down");
@@ -54,11 +64,51 @@ public class Movement : MonoBehaviour {
 			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 				Rolling("Right");
 			}
-			t = 0f;
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+            //Check if Input has registered more than zero touches
+            if (Input.touchCount > 0)
+            {
+                //Store the first touch detected.
+                Touch myTouch = Input.touches[0];
+                
+                //Check if the phase of that touch equals Began
+                if (myTouch.phase == TouchPhase.Began)
+                {
+                    //If so, set touchOrigin to the position of that touch
+                    touchOrigin = myTouch.position;
+                }
+                
+                //If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
+                else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
+                {
+                    //Set touchEnd to equal the position of this touch
+                    Vector2 touchEnd = myTouch.position;
+                    
+                    //Calculate the difference between the beginning and end of the touch on the x axis.
+                    float x = touchEnd.x - touchOrigin.x;
+                    
+                    //Calculate the difference between the beginning and end of the touch on the y axis.
+                    float y = touchEnd.y - touchOrigin.y;
+                    
+                    //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
+                    touchOrigin.x = -1;
+                    
+                    //Check if the difference along the x axis is greater than the difference along the y axis.
+                    if (Mathf.Abs(x) > Mathf.Abs(y))
+                        //If x is greater than zero, set horizontal to 1, otherwise set it to -1
+                        horizontal = x > 0 ? Rolling("Right") : Rolling("Left");
+                    else
+                        //If y is greater than zero, set horizontal to 1, otherwise set it to -1
+                        vertical = y > 0 ? Rolling("Up") : Rolling("Down");
+                }
+            }
+#endif
+            t = 0f;
 			warped = false;
 		}
 
-		if(t < 10f && !isMove)
+
+        if(t < 10f && !isMove)
 		{
 			rb2d.velocity = Vector2.zero;
 			t += Time.deltaTime * speed * main.GetComponent<MainController>().countBall;
@@ -77,18 +127,25 @@ public class Movement : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 
-		if (isMove)
+        if(coll.gameObject.name == "Wall" || coll.gameObject.name =="Blue Wall" || coll.gameObject.name == "Red Wall")
+        {
+            source.PlayOneShot(collideWall);
+        }
+
+        if (isMove)
 		{
 			Recenter ();
 		}
 
 		if (coll.gameObject.tag == "Player" && gameObject.tag == "Needle") {
 			coll.gameObject.GetComponent<Movement> ().PopBall ();
-		}
+            
+        }
 
 		if (coll.gameObject.tag == "Player" || coll.gameObject.tag == "Needle" || coll.gameObject.tag == "Stone") {
 			rb2d.velocity = Vector2.zero;
-		}
+            source.PlayOneShot(collideBall);
+        }
 	}
 
 	void OnCollisionStay2D(Collision2D coll) {
@@ -127,8 +184,8 @@ public class Movement : MonoBehaviour {
 
 	public void PopBall()
 	{
+        source.PlayOneShot(pop);
         gameObject.GetComponent<Collider2D>().enabled = false;
-        
         mc.gameOver = true;
         mc.Failed();
 	}
@@ -157,6 +214,7 @@ public class Movement : MonoBehaviour {
                 rb2d.velocity = Vector2.right * speed;
                 isMove = true;
             }
+            source.PlayOneShot(rolling, 0.5f);
         }
 
 		lastMove = direction;

@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Box : MonoBehaviour {
 
+    public AudioClip hit;
+    public AudioClip destroy;
+    private AudioSource source;
+
     private Color currentColor;
 
-    void Start()
+    void Awake()
     {
         currentColor = gameObject.GetComponent<SpriteRenderer>().color;
+        source = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -17,9 +22,14 @@ public class Box : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D coll) {
+        if (coll.gameObject.tag != "Needle")
+        {
+            source.PlayOneShot(hit);
+        }
 
-		if (coll.gameObject.tag == "Needle")
+        if (coll.gameObject.tag == "Needle")
 		{
+            source.PlayOneShot(destroy);
             gameObject.GetComponent<Collider2D>().enabled = false;
             gameObject.GetComponent<SpriteRenderer>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(false));
         }

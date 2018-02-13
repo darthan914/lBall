@@ -97,6 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac41f399bf5e1a749b353abb6689c3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 0}
+  obj: {fileID: 0}
+  blueObject: {fileID: 0}
+  redObject: {fileID: 0}
+  blueWall: {fileID: 0}
+  redWall: {fileID: 0}
   canvasUI: {fileID: 1224409131609558, guid: e907323bf2efb1a43a33a02b1478eb7c, type: 2}
   countBall: 0
   allowMove: 0
@@ -104,8 +110,6 @@ MonoBehaviour:
   gameOver: 0
   complete: 0
   activeGate: 0
-  numberMove: 0
-  recorded: 0
 --- !u!124 &124552714217763456
 Behaviour:
   m_ObjectHideFlags: 1

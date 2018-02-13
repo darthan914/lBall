@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Sand : MonoBehaviour {
 
+    public AudioClip soundEffect;
+
 	private GameObject currentObject;
 	private Movement movement;
 
 	private GameObject main;
 	private MainController mc;
+    private AudioSource source;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Awake () {
 		main = GameObject.FindWithTag ("MainCamera");
 		mc = main.GetComponent<MainController> ();
-	}
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -28,6 +32,7 @@ public class Sand : MonoBehaviour {
 				(movement.lastMove == "Left" && currentObject.transform.position.x < transform.position.x) ||
 				(movement.lastMove == "Right" && currentObject.transform.position.x > transform.position.x))
 			{
+                source.PlayOneShot(soundEffect);
 				movement.Recenter ();
 				movement = null;
 				currentObject = null;

@@ -2872,6 +2872,36 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 1810720112}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: obj
+      value: 
+      objectReference: {fileID: 1641397856}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: blueObject
+      value: 
+      objectReference: {fileID: 1565101009}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: redObject
+      value: 
+      objectReference: {fileID: 1784925690}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: blueWall
+      value: 
+      objectReference: {fileID: 665793388}
+    - target: {fileID: 114122942073543232, guid: 2ac31aec18d1eee4a8e719d347b6a67f,
+        type: 2}
+      propertyPath: redWall
+      value: 
+      objectReference: {fileID: 762441497}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ac31aec18d1eee4a8e719d347b6a67f, type: 2}
   m_IsPrefabParent: 0

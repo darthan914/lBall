@@ -1,49 +1,60 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class ButtonEvent : MonoBehaviour {
 
+    public AudioClip select;
+
     private GameObject main;
     private MainController mc;
+    private AudioSource source;
+    private GameObject uiTranslation;
 
-    private void Start()
+    private void Awake()
     {
         main = GameObject.FindWithTag("MainCamera");
-        mc = main.GetComponent<MainController>();
+        if(main) mc = main.GetComponent<MainController>();
+        source = GetComponent<AudioSource>();
+
+        uiTranslation = GameObject.Find("UI Translation");
     }
 
     public void Play()
     {
-        SceneManager.LoadScene(1);
+        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        StartCoroutine(DelayedLoad(1));
     }
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        StartCoroutine(DelayedLoad(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void Undo()
     {
-        if(mc.numberMove > 0)
+        if(mc.GetNumberMove() > 0)
         {
-            mc.UndoRedo(mc.numberMove - 1);
+            mc.UndoRedo(mc.GetNumberMove() - 1);
             mc.complete = false;
             mc.gameOver = false;
             mc.HideMessage();
+            SoundEffect();
         }
     }
 
     public void Redo()
     {
-        List<ObjectRecord> find = mc.listObjectRecord.FindAll(obj => obj.NumberMove > mc.numberMove);
-        if (find.Count != 0)
+        if (mc.GetNumberMove() < mc.GetMaxNumberMove())
         {
-            mc.UndoRedo(mc.numberMove + 1);
+            mc.UndoRedo(mc.GetNumberMove() + 1);
             mc.complete = false;
             mc.gameOver = false;
             mc.HideMessage();
+            SoundEffect();
         }
     }
 
@@ -52,18 +63,18 @@ public class ButtonEvent : MonoBehaviour {
         string thisScenePath = SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex);
         string nextScenePath = SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1);
 
-        Debug.Log(nextScenePath);
-
         string[] thisPackName = thisScenePath.Split('/');
         string[] nextPackName = nextScenePath != "" ? nextScenePath.Split('/') : null;
 
-        if(nextPackName != null && thisPackName[3] == nextPackName[3])
+        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+
+        if (nextPackName != null && thisPackName[3] == nextPackName[3])
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(DelayedLoad(SceneManager.GetActiveScene().buildIndex + 1));
         }
         else
         {
-            SceneManager.LoadScene("Assets/Scenes/Level Pack/"+ thisPackName[3] + ".unity");
+            StartCoroutine(DelayedLoad("Assets/Scenes/Level Pack/"+ thisPackName[3] + ".unity"));
         }
     }
 
@@ -72,6 +83,40 @@ public class ButtonEvent : MonoBehaviour {
         string thisScenePath = SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex);
         string[] thisPackName = thisScenePath.Split('/');
 
-        SceneManager.LoadScene("Assets/Scenes/Level Pack/" + thisPackName[3] + ".unity");
+        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+
+        StartCoroutine(DelayedLoad("Assets/Scenes/Level Pack/" + thisPackName[3] + ".unity"));
+    }
+
+    void SoundEffect()
+    {
+        source.PlayOneShot(select);
+    }
+
+    IEnumerator DelayedLoad(int scene)
+    {
+        //Play the clip once
+        source.PlayOneShot(select);
+        
+
+        //Wait until clip finish playing
+        yield return new WaitForSeconds(select.length);
+
+        //Load scene here
+        SceneManager.LoadScene(scene);
+
+    }
+
+    IEnumerator DelayedLoad(string scene)
+    {
+        //Play the clip once
+        source.PlayOneShot(select);
+
+        //Wait until clip finish playing
+        yield return new WaitForSeconds(select.length);
+
+        //Load scene here
+        SceneManager.LoadScene(scene);
+
     }
 }

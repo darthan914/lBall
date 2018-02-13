@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Flip : MonoBehaviour {
 
-	public enum Line {
+    public AudioClip flipObject;
+    public AudioClip hitWall;
+    private AudioSource source;
+
+    public enum Line {
 		Horizontal, Vertical
 	}
 
@@ -37,7 +41,7 @@ public class Flip : MonoBehaviour {
 	private MainController mc;
     private bool recorded;
 
-    void Start () {
+    void Awake () {
 		main = GameObject.FindWithTag ("MainCamera");
 		mc = main.GetComponent<MainController> ();
 
@@ -56,6 +60,8 @@ public class Flip : MonoBehaviour {
 		} else if ((int)Mathf.Round (transform.eulerAngles.z) == 270) {
 			direction = Direction.Right;
 		}
+
+        source = GetComponent<AudioSource>();
 
     }
 
@@ -87,7 +93,8 @@ public class Flip : MonoBehaviour {
 				(movement.lastMove == "Left" && currentObject.transform.position.x < transform.position.x) ||
 				(movement.lastMove == "Right" && currentObject.transform.position.x > transform.position.x))
 			{
-				transform.eulerAngles = new Vector3 (0,0,transform.eulerAngles.z + 180);
+                source.PlayOneShot(flipObject);
+                transform.eulerAngles = new Vector3 (0,0,transform.eulerAngles.z + 180);
 				direction = Reverse (direction);
 				ClearObject ();
 				fliped = true;
@@ -109,6 +116,7 @@ public class Flip : MonoBehaviour {
             (direction != Direction.Right && movement.lastMove == "Left"))
             {
                 other.gameObject.GetComponent<Movement>().oneWay = true;
+                source.PlayOneShot(hitWall);
             }
         }
 
@@ -125,6 +133,7 @@ public class Flip : MonoBehaviour {
             movement != null))
             {
                 other.gameObject.GetComponent<Movement>().oneWay = true;
+                source.PlayOneShot(hitWall);
             }
         }
 	}

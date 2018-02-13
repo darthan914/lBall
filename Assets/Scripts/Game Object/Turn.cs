@@ -9,8 +9,10 @@ public class Turn : MonoBehaviour {
 	}
 
 	public Turning turning;
+    public AudioClip soundEffect;
+    private AudioSource source;
 
-	private GameObject currentObject;
+    private GameObject currentObject;
 	private Movement movement;
 	private bool isTouch = false;
 
@@ -18,10 +20,12 @@ public class Turn : MonoBehaviour {
 	private MainController mc;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		main = GameObject.FindWithTag ("MainCamera");
 		mc = main.GetComponent<MainController> ();
-	}
+
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -30,14 +34,16 @@ public class Turn : MonoBehaviour {
 		}
 
 		if (movement != null && isTouch) {
-			if (movement.lastMove == "Up" && currentObject.transform.position.y > transform.position.y) {
+            
+            if (movement.lastMove == "Up" && currentObject.transform.position.y > transform.position.y) {
 				movement.transform.position = transform.position;
 				if (turning == Turning.Left) {
 					movement.Rolling("Left");
 				} else if (turning == Turning.Right) {
 					movement.Rolling("Right");
 				}
-				ClearObject ();
+                source.PlayOneShot(soundEffect);
+                ClearObject ();
 			}
 			else if (movement.lastMove == "Down" && currentObject.transform.position.y < transform.position.y) {
 				movement.transform.position = transform.position;
@@ -46,7 +52,8 @@ public class Turn : MonoBehaviour {
 				} else if (turning == Turning.Right) {
 					movement.Rolling("Left");
 				}
-				ClearObject ();
+                source.PlayOneShot(soundEffect);
+                ClearObject ();
 			}
 			else if (movement.lastMove == "Left" && currentObject.transform.position.x < transform.position.x) {
 				movement.transform.position = transform.position;
@@ -55,7 +62,8 @@ public class Turn : MonoBehaviour {
 				} else if (turning == Turning.Right) {
 					movement.Rolling("Up");
 				}
-				ClearObject ();
+                source.PlayOneShot(soundEffect);
+                ClearObject ();
 			}
 			else if (movement.lastMove == "Right" && currentObject.transform.position.x > transform.position.x) {
 				movement.transform.position = transform.position;
@@ -64,7 +72,8 @@ public class Turn : MonoBehaviour {
 				} else if (turning == Turning.Right) {
 					movement.Rolling("Down");
 				}
-				ClearObject ();
+                source.PlayOneShot(soundEffect);
+                ClearObject ();
 			}
 
 
@@ -83,7 +92,8 @@ public class Turn : MonoBehaviour {
 
 	void ClearObject()
 	{
-		currentObject = null;
+        
+        currentObject = null;
 		movement = null;
 		isTouch = false;
 	}
