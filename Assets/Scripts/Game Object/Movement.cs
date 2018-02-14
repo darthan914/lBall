@@ -30,6 +30,7 @@ public class Movement : MonoBehaviour {
     private Color currentColor;
 
     private Vector2 touchOrigin = -Vector2.one;
+    private float swipeSensitive = 30f;
 
 
     void Awake () {
@@ -54,7 +55,7 @@ public class Movement : MonoBehaviour {
 
 
 		if (main.GetComponent<MainController>().allowMove) {
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+#if UNITY_STANDALONE || UNITY_WEBPLAYER
             if (Input.GetKeyDown (KeyCode.UpArrow)) {
 				Rolling("Up");
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
@@ -87,19 +88,32 @@ public class Movement : MonoBehaviour {
                     //Calculate the difference between the beginning and end of the touch on the x axis.
                     float x = touchEnd.x - touchOrigin.x;
                     
+                    
                     //Calculate the difference between the beginning and end of the touch on the y axis.
                     float y = touchEnd.y - touchOrigin.y;
-                    
+
+                    //Debug.Log("distX : " + Mathf.Abs(x) + "; distY : " + Mathf.Abs(y));
+
                     //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
                     touchOrigin.x = -1;
-                    
+
                     //Check if the difference along the x axis is greater than the difference along the y axis.
-                    if (Mathf.Abs(x) > Mathf.Abs(y))
-                        //If x is greater than zero, set horizontal to 1, otherwise set it to -1
-                        horizontal = x > 0 ? Rolling("Right") : Rolling("Left");
-                    else
-                        //If y is greater than zero, set horizontal to 1, otherwise set it to -1
-                        vertical = y > 0 ? Rolling("Up") : Rolling("Down");
+                    if (Mathf.Abs(x) > swipeSensitive || Mathf.Abs(y) > swipeSensitive)
+                    {
+                        if (Mathf.Abs(x) > Mathf.Abs(y))
+                        {
+                            //If x is greater than zero, set horizontal to 1, otherwise set it to -1
+                            if (x > 0) Rolling("Right");
+                            else Rolling("Left");
+                        }
+                        else
+                        {
+                            //If y is greater than zero, set horizontal to 1, otherwise set it to -1
+                            if (y > 0) Rolling("Up");
+                            else Rolling("Down");
+                        }
+                    }
+                        
                 }
             }
 #endif

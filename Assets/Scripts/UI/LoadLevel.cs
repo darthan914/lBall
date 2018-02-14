@@ -15,12 +15,16 @@ public class LoadLevel : MonoBehaviour {
 
     public AudioClip select;
     private AudioSource source;
-    private GameObject uiTranslation;
+
+    private FadeInOut fade;
 
     // Use this for initialization
     void Awake () {
 
-        for(int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        fade = GetComponent<FadeInOut>();
+        fade.fadeSpeed = select.length;
+
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             int sceneIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
@@ -93,7 +97,6 @@ public class LoadLevel : MonoBehaviour {
 
         source = GetComponent<AudioSource>();
 
-        uiTranslation = GameObject.Find("UI Translation");
     }
 
     public void LoadLevelByIndex(int index)
@@ -119,9 +122,10 @@ public class LoadLevel : MonoBehaviour {
         //Play the clip once
         source.PlayOneShot(select);
 
+        float fadeTime = fade.BeginFade(1);
 
         //Wait until clip finish playing
-        yield return new WaitForSeconds(select.length);
+        yield return new WaitForSeconds(fadeTime);
 
         //Load scene here
         SceneManager.LoadScene(scene);
@@ -133,11 +137,12 @@ public class LoadLevel : MonoBehaviour {
         //Play the clip once
         source.PlayOneShot(select);
 
+        float fadeTime = fade.BeginFade(1);
+
         //Wait until clip finish playing
-        yield return new WaitForSeconds(select.length);
+        yield return new WaitForSeconds(fadeTime);
 
         //Load scene here
         SceneManager.LoadScene(scene);
-
     }
 }

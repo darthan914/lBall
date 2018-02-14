@@ -43,9 +43,11 @@ public class MainController : MonoBehaviour {
     private int temp1, temp2;
     private GameObject temp1go, temp2go;
 
+    private ButtonEvent bt;
+
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         FillGameObject();
 
         canvasUI   = canvasUI ? canvasUI : GameObject.Find("Canvas");
@@ -58,6 +60,8 @@ public class MainController : MonoBehaviour {
             GameObject instantiate = Instantiate(canvasUI);
             instantiate.name = "Canvas";
 
+            bt = instantiate.GetComponent<ButtonEvent>();
+
             panelButton  = instantiate.transform.Find("Button Panel").gameObject;
             panelStatus  = instantiate.transform.Find("Status Panel").gameObject;
             panelMessage = instantiate.transform.Find("Message Panel").gameObject;
@@ -68,6 +72,8 @@ public class MainController : MonoBehaviour {
 
             textMove = panelStatus.transform.Find("Move").GetComponent<Text>();
             textTime = panelStatus.transform.Find("Time").GetComponent<Text>();
+
+            bt.PlayGo();
 
             panelMessage.GetComponent<Image>().color = Color.green;
             panelMessage.GetComponentInChildren<Text>().text = "GO";
@@ -218,16 +224,16 @@ public class MainController : MonoBehaviour {
             for (int i = 0; i < blueObject.transform.childCount; i++)
             {
                 Color currentColor = blueObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color;
-                blueObject.transform.GetChild(i).GetComponent<Collider2D>().enabled = !activeGate;
-                blueObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(!activeGate));
+                blueObject.transform.GetChild(i).GetComponent<Collider2D>().enabled = activeGate;
+                blueObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(activeGate));
             }
         }
 
         if (blueWall != null)
         {
             Color currentColor = blueWall.gameObject.GetComponent<Tilemap>().color;
-            blueWall.gameObject.GetComponent<Collider2D>().enabled = !activeGate;
-            blueWall.gameObject.GetComponent<Tilemap>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(!activeGate));
+            blueWall.gameObject.GetComponent<Collider2D>().enabled = activeGate;
+            blueWall.gameObject.GetComponent<Tilemap>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(activeGate));
         }
 
         if (redObject != null)
@@ -235,16 +241,16 @@ public class MainController : MonoBehaviour {
             for (int i = 0; i < redObject.transform.childCount; i++)
             {
                 Color currentColor = redObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color;
-                redObject.transform.GetChild(i).GetComponent<Collider2D>().enabled = activeGate;
-                redObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(activeGate));
+                redObject.transform.GetChild(i).GetComponent<Collider2D>().enabled = !activeGate;
+                redObject.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(!activeGate));
             }
         }
 
         if (redWall != null)
         {
             Color currentColor = redWall.gameObject.GetComponent<Tilemap>().color;
-            redWall.gameObject.GetComponent<Collider2D>().enabled = activeGate;
-            redWall.gameObject.GetComponent<Tilemap>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(activeGate));
+            redWall.gameObject.GetComponent<Collider2D>().enabled = !activeGate;
+            redWall.gameObject.GetComponent<Tilemap>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(!activeGate));
         }
 
         activeGate = !activeGate;
@@ -252,6 +258,7 @@ public class MainController : MonoBehaviour {
 
     public void Complete()
     {
+        bt.PlayComplete();
         panelMessage.GetComponent<Image>().color = Color.yellow;
         panelMessage.GetComponentInChildren<Text>().text = "Complete";
         panelMessage.GetComponentInChildren<Text>().color = Color.yellow;
@@ -265,6 +272,8 @@ public class MainController : MonoBehaviour {
 
     public void Failed()
     {
+        bt.PlayFailure();
+
         panelMessage.GetComponent<Image>().color = Color.red;
         panelMessage.GetComponentInChildren<Text>().text = "Failure";
         panelMessage.GetComponentInChildren<Text>().color = Color.red;

@@ -8,10 +8,14 @@ public class ButtonEvent : MonoBehaviour {
 
     public AudioClip select;
 
+    public AudioClip complete;
+    public AudioClip failure;
+    public AudioClip go;
+
     private GameObject main;
     private MainController mc;
     private AudioSource source;
-    private GameObject uiTranslation;
+    private FadeInOut fade;
 
     private void Awake()
     {
@@ -19,18 +23,19 @@ public class ButtonEvent : MonoBehaviour {
         if(main) mc = main.GetComponent<MainController>();
         source = GetComponent<AudioSource>();
 
-        uiTranslation = GameObject.Find("UI Translation");
+        fade = GetComponent<FadeInOut>();
+        fade.fadeSpeed = select.length;
     }
 
     public void Play()
     {
-        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        
         StartCoroutine(DelayedLoad(1));
     }
 
     public void Restart()
     {
-        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        fade.BeginFade(1);
         StartCoroutine(DelayedLoad(SceneManager.GetActiveScene().buildIndex));
     }
 
@@ -66,7 +71,7 @@ public class ButtonEvent : MonoBehaviour {
         string[] thisPackName = thisScenePath.Split('/');
         string[] nextPackName = nextScenePath != "" ? nextScenePath.Split('/') : null;
 
-        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        fade.BeginFade(1);
 
         if (nextPackName != null && thisPackName[3] == nextPackName[3])
         {
@@ -83,7 +88,7 @@ public class ButtonEvent : MonoBehaviour {
         string thisScenePath = SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex);
         string[] thisPackName = thisScenePath.Split('/');
 
-        if (uiTranslation) uiTranslation.GetComponent<FadeInOut>().FadeIn();
+        fade.BeginFade(1);
 
         StartCoroutine(DelayedLoad("Assets/Scenes/Level Pack/" + thisPackName[3] + ".unity"));
     }
@@ -93,14 +98,30 @@ public class ButtonEvent : MonoBehaviour {
         source.PlayOneShot(select);
     }
 
+    public void PlayComplete()
+    {
+        source.PlayOneShot(complete);
+    }
+
+    public void PlayFailure()
+    {
+        source.PlayOneShot(failure);
+    }
+
+    public void PlayGo()
+    {
+        source.PlayOneShot(go);
+    }
+
     IEnumerator DelayedLoad(int scene)
     {
         //Play the clip once
         source.PlayOneShot(select);
-        
+
+        float fadeTime = fade.BeginFade(1);
 
         //Wait until clip finish playing
-        yield return new WaitForSeconds(select.length);
+        yield return new WaitForSeconds(fadeTime);
 
         //Load scene here
         SceneManager.LoadScene(scene);
@@ -112,11 +133,12 @@ public class ButtonEvent : MonoBehaviour {
         //Play the clip once
         source.PlayOneShot(select);
 
+        float fadeTime = fade.BeginFade(1);
+
         //Wait until clip finish playing
-        yield return new WaitForSeconds(select.length);
+        yield return new WaitForSeconds(fadeTime);
 
         //Load scene here
         SceneManager.LoadScene(scene);
-
     }
 }

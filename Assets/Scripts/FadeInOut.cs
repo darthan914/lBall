@@ -5,46 +5,33 @@ using UnityEngine.UI;
 
 public class FadeInOut : MonoBehaviour {
 
-    public float speedFade = 1f;
+    public Texture2D fadeOutTexture;
+    public Color colorTexture;
+    public float fadeSpeed = 0.8f;
 
-    private Color currentColor;
-    private float alpha = 1f;
+    private int drawDepth = -1000;
+    private float alpha = 1.0f;
+    private int fadeDir = -1;
 
-    private bool startFadeIn;
-    
-
-    void Awake() {
-        currentColor = GetComponent<Image>().color;
-    }
-	
-	void Update () {
-        if(!startFadeIn)
-        {
-            if (alpha > 0)
-            {
-                GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, Mathf.Max(alpha, 0f));
-                alpha = alpha - (Time.deltaTime * speedFade);
-            }
-
-            if (alpha <= 0) gameObject.SetActive(false);
-        }
-        else if (startFadeIn)
-        {
-            gameObject.SetActive(true);
-
-            if (alpha <= 1)
-            {
-                alpha = alpha + (Time.deltaTime * (speedFade));
-
-                GetComponent<Image>().color = new Color(currentColor.r, currentColor.g, currentColor.b, Mathf.Min(alpha, 1f));
-                
-            }
-        }
-        
-    }
-
-    public void FadeIn()
+    private void OnGUI()
     {
-        startFadeIn = true;
+        alpha += fadeDir * (Time.deltaTime / fadeSpeed) ;
+
+        alpha = Mathf.Clamp01(alpha);
+
+        GUI.color = new Color(colorTexture.r, colorTexture.g, colorTexture.b, alpha);
+        GUI.depth = drawDepth;
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeOutTexture);
+    }
+
+    public float BeginFade(int direction)
+    {
+        fadeDir = direction;
+        return ( fadeSpeed );
+    }
+
+    private void OnLevelWasLoaded()
+    {
+        BeginFade(-1);
     }
 }
