@@ -17,13 +17,9 @@ public class Goal : MonoBehaviour {
 
     private void Update()
     {
-        if (currentObject != null && currentObject.gameObject.tag == "Player" && mc.allowMove && !mc.complete)
+        if (currentObject != null && currentObject.gameObject.tag == "Player")
         {
-            if(!mc.complete)
-            {
-                mc.complete = true;
-                mc.Complete();
-            }
+            mc.complete = true;
         }
     }
 
@@ -48,6 +44,7 @@ public class Goal : MonoBehaviour {
         if (other.gameObject.GetInstanceID() == currentObject.GetInstanceID())
         {
             ClearObject();
+            mc.complete = false;
         }
     }
 

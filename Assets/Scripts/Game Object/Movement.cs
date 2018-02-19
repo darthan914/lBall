@@ -55,7 +55,8 @@ public class Movement : MonoBehaviour {
 
 
 		if (main.GetComponent<MainController>().allowMove) {
-#if UNITY_STANDALONE || UNITY_WEBPLAYER
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+
             if (Input.GetKeyDown (KeyCode.UpArrow)) {
 				Rolling("Up");
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
@@ -65,50 +66,36 @@ public class Movement : MonoBehaviour {
 			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 				Rolling("Right");
 			}
-#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
-            //Check if Input has registered more than zero touches
+#endif
+
+#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
             if (Input.touchCount > 0)
             {
-                //Store the first touch detected.
                 Touch myTouch = Input.touches[0];
                 
-                //Check if the phase of that touch equals Began
                 if (myTouch.phase == TouchPhase.Began)
                 {
-                    //If so, set touchOrigin to the position of that touch
                     touchOrigin = myTouch.position;
                 }
                 
-                //If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
                 else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
                 {
-                    //Set touchEnd to equal the position of this touch
                     Vector2 touchEnd = myTouch.position;
                     
-                    //Calculate the difference between the beginning and end of the touch on the x axis.
                     float x = touchEnd.x - touchOrigin.x;
-                    
-                    
-                    //Calculate the difference between the beginning and end of the touch on the y axis.
                     float y = touchEnd.y - touchOrigin.y;
 
-                    //Debug.Log("distX : " + Mathf.Abs(x) + "; distY : " + Mathf.Abs(y));
-
-                    //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
                     touchOrigin.x = -1;
 
-                    //Check if the difference along the x axis is greater than the difference along the y axis.
                     if (Mathf.Abs(x) > swipeSensitive || Mathf.Abs(y) > swipeSensitive)
                     {
                         if (Mathf.Abs(x) > Mathf.Abs(y))
                         {
-                            //If x is greater than zero, set horizontal to 1, otherwise set it to -1
                             if (x > 0) Rolling("Right");
                             else Rolling("Left");
                         }
                         else
                         {
-                            //If y is greater than zero, set horizontal to 1, otherwise set it to -1
                             if (y > 0) Rolling("Up");
                             else Rolling("Down");
                         }
@@ -139,7 +126,7 @@ public class Movement : MonoBehaviour {
 
     }
 
-	void OnCollisionEnter2D(Collision2D coll) {
+    void OnCollisionEnter2D(Collision2D coll) {
 
         if(coll.gameObject.name == "Wall" || coll.gameObject.name =="Blue Wall" || coll.gameObject.name == "Red Wall")
         {
@@ -201,7 +188,7 @@ public class Movement : MonoBehaviour {
         source.PlayOneShot(pop);
         gameObject.GetComponent<Collider2D>().enabled = false;
         mc.gameOver = true;
-        mc.Failed();
+        Recenter();
 	}
 
 	public void Rolling(string direction)

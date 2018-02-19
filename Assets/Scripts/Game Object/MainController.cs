@@ -25,6 +25,10 @@ public class MainController : MonoBehaviour {
     private Button buttonRedo;
     private Button buttonNext;
 
+    private GameObject buttonMessageRestart;
+    private GameObject buttonMessageUndo;
+    private GameObject buttonMessageNext;
+
     private float time;
     private float delay;
 
@@ -70,6 +74,10 @@ public class MainController : MonoBehaviour {
             buttonUndo = panelButton.transform.Find("Undo").GetComponent<Button>();
             buttonNext = panelButton.transform.Find("Next").GetComponent<Button>();
 
+            buttonMessageUndo = GameObject.Find("Message Undo");
+            buttonMessageRestart = GameObject.Find("Message Restart");
+            buttonMessageNext = GameObject.Find("Message Next");
+
             textMove = panelStatus.transform.Find("Move").GetComponent<Text>();
             textTime = panelStatus.transform.Find("Time").GetComponent<Text>();
 
@@ -81,6 +89,10 @@ public class MainController : MonoBehaviour {
 
             panelMessage.GetComponent<Image>().CrossFadeAlpha(0f, 2.0f, false);
             panelMessage.GetComponentInChildren<Text>().CrossFadeAlpha(0f, 2.0f, false);
+
+            buttonMessageUndo.SetActive(false);
+            buttonMessageRestart.SetActive(false);
+            buttonMessageNext.SetActive(false);
         }
 
         AutomatedTeleport(obj);
@@ -88,6 +100,10 @@ public class MainController : MonoBehaviour {
         AutomatedTeleport(redObject);
 
         buttonUndo.interactable = buttonRedo.interactable = false;
+
+        Color currentColor = redWall.gameObject.GetComponent<Tilemap>().color;
+        redWall.gameObject.GetComponent<Collider2D>().enabled = false;
+        redWall.gameObject.GetComponent<Tilemap>().color = new Color(currentColor.r, currentColor.g, currentColor.b, TransparencyActive(false));
 
         SaveCurrentMove();
     }
@@ -127,7 +143,18 @@ public class MainController : MonoBehaviour {
             SaveCurrentMove();
             buttonUndo.interactable = true;
             buttonRedo.interactable = false;
+
+            if (gameOver)
+            {
+                Failed();
+            }
+            else if (complete)
+            {
+                Complete();
+            }
         }
+
+        
 	}
 
     public void FillGameObject()
@@ -214,7 +241,9 @@ public class MainController : MonoBehaviour {
         if (numberMove < maxNumberMove) buttonRedo.interactable = true;
         else buttonRedo.interactable = false;
 
-
+        buttonMessageUndo.SetActive(false);
+        buttonMessageRestart.SetActive(false);
+        buttonMessageNext.SetActive(false);
     }
 
     public void TriggerKey()
@@ -268,6 +297,8 @@ public class MainController : MonoBehaviour {
 
         buttonUndo.interactable = false;
         buttonRedo.interactable = false;
+
+        buttonMessageNext.SetActive(true);
     }
 
     public void Failed()
@@ -280,6 +311,9 @@ public class MainController : MonoBehaviour {
 
         panelMessage.GetComponent<Image>().CrossFadeAlpha(1f, .1f, false);
         panelMessage.GetComponentInChildren<Text>().CrossFadeAlpha(1f, .1f, false);
+
+        buttonMessageRestart.SetActive(true);
+        buttonMessageUndo.SetActive(true);
     }
 
     public void HideMessage()
