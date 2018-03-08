@@ -104,3 +104,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level Pack/Starter/00030.unity
     guid: ca67be1d6b009794f81ab12626a77a7b
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring.unity
+    guid: 6f19c3c66c83d8844af26d53081ec6d8
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00001.unity
+    guid: 459f4151df7ef0f49a283171f8219776
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00002.unity
+    guid: fa2b6934ca97a5f49941bacd0d9de18e
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00003.unity
+    guid: 047556af68fb7274da603df44eb6679e
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00004.unity
+    guid: 5a351e9275502604192ae0a059fbca2f
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00005.unity
+    guid: 278c6a79d06b0724ab8662bbe68034fb
+  - enabled: 1
+    path: Assets/Scenes/Level Pack/Boring/00006.unity
+    guid: 8311f3bd4624d9b44a9219c260d2c097
